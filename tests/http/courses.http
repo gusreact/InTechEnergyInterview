@@ -1,0 +1,4 @@
+###
+# @name = gets current courses
+
+GET http://localhost:5296/courses
