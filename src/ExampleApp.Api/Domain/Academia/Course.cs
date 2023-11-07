@@ -2,7 +2,13 @@ namespace ExampleApp.Api.Domain.Academia;
 
 internal class Course : AggregateRoot<string>
 {
-    public Course(string id, string description, Semester semester, Professor professor, DateTimeOffset createdOn, DateTimeOffset lastModifiedOn)
+    public Course(
+        string id,
+        string description,
+        Semester semester,
+        Professor professor,
+        DateTimeOffset createdOn,
+        DateTimeOffset lastModifiedOn)
     {
         Id = id;
         Description = description;

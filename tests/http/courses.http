@@ -18,3 +18,4 @@ PATCH http://localhost:5296/courses
 Content-Type: application/json
 
 {"courseId": "POT-101-23", "newProfessorName": "Severus Snape"}
+
