@@ -1,5 +1,6 @@
 using ExampleApp.Api.Controllers.Models;
 using ExampleApp.Api.Domain.Academia;
+using ExampleApp.Api.Domain.Academia.Commands;
 using ExampleApp.Api.Domain.Academia.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +26,7 @@ public class CoursesController : ControllerBase
         DateOnly today = new(2023, 9, 1);
         ICollection<Course> courses = await _mediator.Send(new GetCoursesActiveOnDateQuery(today));
         _logger.LogInformation("Retrieved {Count} current courses", courses.Count);
-        
+
         List <CourseModel> models = new();
         foreach (var course in courses)
         {
@@ -38,4 +39,22 @@ public class CoursesController : ControllerBase
         return models;
     }
 
+    [HttpPatch(Name = "UpdatesProfessor")]
+    public async Task<ActionResult> UpdateProfessor([FromBody] ProfessorUpdateModel model)
+    {
+        var existingCourse = await _mediator.Send(new FindCourseByIdQuery(model.CourseId));
+        if (existingCourse is null)
+        {
+            return NotFound($"Invalid course {model.CourseId}");
+        }
+
+        var professor = await _mediator.Send(new FindProfessorByNamedQuery(model.NewProfessorName));
+        if (professor is null)
+        {
+            return NotFound($"Cannot file a professor named {model.NewProfessorName}");
+        }
+
+        _ = await _mediator.Send(new UpdateCourseProfessor(existingCourse.Id, professor.Id));
+        return Accepted();
+    }
 }

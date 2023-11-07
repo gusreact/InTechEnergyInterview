@@ -9,9 +9,9 @@ internal class AcademiaDbContext : DbContext
     {
     }
 
-    public DbSet<Course> Courses { get; set; }
-    protected DbSet<Professor> Professors { get; set; }
-    protected DbSet<Semester> Semesters { get; set; }
+    internal DbSet<Course> Courses { get; set; }
+    internal DbSet<Professor> Professors { get; set; }
+    internal DbSet<Semester> Semesters { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

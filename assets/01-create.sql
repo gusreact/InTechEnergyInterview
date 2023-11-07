@@ -60,7 +60,8 @@ INSERT INTO [example-db].dbo.Professors
   (Id, FullName, Extension)
   VALUES
     (1, 'Severus Snape', '4851'),
-    (2, 'Charles Xavier', NULL)
+    (2, 'Charles Xavier', NULL),
+    (3, 'Horace Slughorn', '4850')
 ;
 SET IDENTITY_INSERT [example-db].dbo.Professors OFF;
 

@@ -2,3 +2,19 @@
 # @name = gets current courses
 
 GET http://localhost:5296/courses
+
+
+###
+# @name = Update professor
+
+PATCH http://localhost:5296/courses
+Content-Type: application/json
+
+{"courseId": "POT-101-23", "newProfessorName": "Horace Slughorn"}
+
+###
+# @name = Change back to default
+PATCH http://localhost:5296/courses
+Content-Type: application/json
+
+{"courseId": "POT-101-23", "newProfessorName": "Severus Snape"}

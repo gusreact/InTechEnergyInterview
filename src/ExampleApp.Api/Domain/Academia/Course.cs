@@ -24,5 +24,11 @@ internal class Course : AggregateRoot<string>
     }
     public string Description { get; init; }
     public Semester Semester { get; protected init; }
-    public Professor Professor { get; protected init; }
+    public Professor Professor { get; protected set; }
+
+    public void UpdateProfessor(Professor newProfessor)
+    {
+        Professor = newProfessor ?? throw new ArgumentNullException(nameof(newProfessor));
+        LastModifiedOn = DateTimeOffset.UtcNow;
+    }
 }
