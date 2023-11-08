@@ -20,13 +20,8 @@ public class CourseControllerIntegrationTests : IClassFixture<DatabaseFixture>, 
         _controller = new CoursesController(mediator, logger);
         _db = (AcademiaDbContext)fixture.Services.GetService(typeof(AcademiaDbContext))!;
 
-        // remove previous values
-        _db.Database.ExecuteSql(
-            $@"
-DELETE FROM [example-db].dbo.Courses WHERE Id = 'TEST-01';
-DELETE FROM [example-db].dbo.Professors WHERE FullName like 'test professor 0%';
-DELETE FROM [example-db].dbo.Semesters WHERE Id = 'tst-01';
-            ");
+        // remove previous values, in case there were left by an aborted debug session
+        Dispose();
 
         // create records available for all tests
         _db.Database.ExecuteSql(
@@ -53,10 +48,11 @@ WHERE FullName = 'test professor 01';
 
     public void Dispose()
     {
+        // clean up after tests
         _db.Database.ExecuteSql(
             $@"
 DELETE FROM [example-db].dbo.Courses WHERE Id = 'TEST-01';
-DELETE FROM [example-db].dbo.Professors WHERE FullName like 'test professor 0?';
+DELETE FROM [example-db].dbo.Professors WHERE FullName like 'test professor 0%';
 DELETE FROM [example-db].dbo.Semesters WHERE Id = 'tst-01';
             ");
     }
