@@ -3,6 +3,9 @@ max_line_length = 120
 trim_trailing_whitespace = true
 insert_final_newline = true
 
+[*.md]
+trim_trailing_whitespace = false
+
 [*.cs]
 
 # CS1591: Missing XML comment for publicly visible type or member
