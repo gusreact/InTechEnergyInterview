@@ -62,7 +62,7 @@ and use your experience in providing an acceptable initial solution for them.
 
 #### Task 1 - End-point to list Students and their current Course load
 
-We need an API end-point that produces a list of _Students_ (stored `Students` table),
+We need an API end-point that produces a list of _Students_ (stored in the `Students` table),
 with all their attributes, and for each student listing the number of _Courses_
 (not the list but the number!) they are registered for in the **current Semester**.
 
