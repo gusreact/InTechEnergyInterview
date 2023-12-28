@@ -41,7 +41,8 @@ To that extent, please consider each of the tasks below being a "user story".
 
 We expect that you will:
 
-- fork the repo and create a branch for each task/"user story";
+- fork the repo under your own account and create a branch for each task/"user story"
+  as you work on them;
 - follow the style, coding conventions and architecture the codebase currently
   exhibits; be able to explain the reason behind deviating when needed;
 - make use of existing code, when appropriate, and keep isolation when needed;
