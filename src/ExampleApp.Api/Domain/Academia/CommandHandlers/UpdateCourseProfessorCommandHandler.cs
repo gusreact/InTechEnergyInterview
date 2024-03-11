@@ -2,7 +2,7 @@ using ExampleApp.Api.Domain.Academia.Commands;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace ExampleApp.Api.Domain.Academia.CommandHanlders;
+namespace ExampleApp.Api.Domain.Academia.CommandHandlers;
 
 internal class UpdateCourseProfessorCommandHandler : IRequestHandler<UpdateCourseProfessor, Unit>
 {
