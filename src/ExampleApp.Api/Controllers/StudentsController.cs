@@ -3,6 +3,9 @@ using ExampleApp.Api.Domain.Students.Queries;
 using ExampleApp.Api.Domain.Students;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using ExampleApp.Api.Domain.Academia.Commands;
+using ExampleApp.Api.Domain.Academia.Queries;
+using ExampleApp.Api.Domain.Students.Commands;
 
 namespace ExampleApp.Api.Controllers;
 
@@ -35,5 +38,19 @@ public class StudentsController : ControllerBase
         }
 
         return models;
+    }
+
+    [HttpPatch(Name = "RegisterCourse")]
+    public async Task<ActionResult> Register([FromBody] CourseRegisterModel model)
+    {
+        DateOnly today = new(2023, 9, 1);
+        var existingCourse = await _mediator.Send(new GetCourseActiveOnDateQuery(today, model.CourseId));
+        if (existingCourse is null)
+        {
+            return NotFound($"Invalid course {model.CourseId}");
+        }
+
+        _ = await _mediator.Send(new RegisterCourse(model.StudentId, model.CourseId));
+        return Accepted();
     }
 }
