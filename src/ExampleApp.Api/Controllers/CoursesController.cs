@@ -28,13 +28,12 @@ public class CoursesController : ControllerBase
         _logger.LogInformation("Retrieved {Count} current courses", courses.Count);
 
         List <CourseModel> models = new();
-        foreach (var course in courses)
-        {
-            var semesterModel = new KeyNameModel(course.Semester.Id, course.Semester.Description);
-            var professorModel = new KeyNameModel(course.Professor.Id.ToString(), course.Professor.FullName);
-            CourseModel courseModel = new(course.Id, course.Description, semesterModel, professorModel);
-            models.Add(courseModel);
-        }
+
+        models.AddRange(from course in courses
+                        let semesterModel = new KeyNameModel(course.Semester.Id, course.Semester.Description)
+                        let professorModel = new KeyNameModel(course.Professor.Id.ToString(), course.Professor.FullName)
+                        let courseModel = new CourseModel(course.Id, course.Description, semesterModel, professorModel)
+                        select courseModel);
 
         return models;
     }
