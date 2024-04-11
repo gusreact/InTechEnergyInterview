@@ -6,10 +6,13 @@ namespace ExampleApp.Api.Domain.Students;
 
 internal class StudentsDbContext : DbContext
 {
-    public StudentsDbContext(DbContextOptions<AcademiaDbContext> options) : base(options)
+    public StudentsDbContext(DbContextOptions<StudentsDbContext> options) : base(options)
     {
     }
 
+    internal DbSet<Student> Students { get; set; }
+    internal DbSet<StudentsCourses> StudentsCourses { get; set; }
+    internal DbSet<Course> Courses { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
