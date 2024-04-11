@@ -50,7 +50,9 @@ INSERT [dbo].[Students] ([Id], [FullName], [Badge], [ResidenceStatus], [CreatedO
 VALUES (2, N'Santa I Claus', N'santa-i-claus', N'Foreign', CAST(N'2024-04-10T12:51:21.0246989-03:00' AS DateTimeOffset), CAST(N'2024-04-10T12:51:21.0246989-03:00' AS DateTimeOffset))
 INSERT [dbo].[Students] ([Id], [FullName], [Badge], [ResidenceStatus], [CreatedOn], [LastModifiedOn]) 
 VALUES (3, N'Alf', N'alf', N'OutOfState', CAST(N'2024-04-10T12:51:21.0246989-03:00' AS DateTimeOffset), CAST(N'2024-04-10T12:51:21.0246989-03:00' AS DateTimeOffset))
-SET IDENTITY_INSERT [dbo].[Students] OFF");
+SET IDENTITY_INSERT [dbo].[Students] OFF
+INSERT [dbo].[StudentsCourses] ([StudentId], [CourseId]) 
+VALUES (2, N'TLP-201-23');");
     }
 
     public void Dispose()
@@ -94,6 +96,24 @@ DELETE FROM [example-db].dbo.Semesters WHERE Id = '2024-1';
     }
 
     [Fact]
+    public async Task UnRegisterCourse()
+    {
+        // Arrange
+        CourseRegisterModel payload = new(2, "TLP-201-23");
+
+        // Act
+        var response = await _controller.UnRegister(payload);
+
+        // Assert
+        response.Should().BeOfType<AcceptedResult>();
+
+        StudentsCourses? studentCourse = await _db.StudentsCourses
+            .FirstOrDefaultAsync(c => c.StudentId == payload.StudentId && c.CourseId == payload.CourseId);
+
+        studentCourse.Should().BeNull();
+    }
+
+    [Fact]
     public async Task ReturnsNotFoundIfCourseIsNotFound()
     {
         // Arrange
@@ -111,6 +131,6 @@ DELETE FROM [example-db].dbo.Semesters WHERE Id = '2024-1';
 
         message.Should()
             .NotBeNull()
-            .And.Be("Invalid course TEST-00");
+            .And.Be("Inactive course TEST-00");
     }
 }
