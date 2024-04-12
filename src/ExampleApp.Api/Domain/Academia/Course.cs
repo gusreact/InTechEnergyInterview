@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace ExampleApp.Api.Domain.Academia;
 
 internal class Course : AggregateRoot<string>
@@ -13,7 +15,7 @@ internal class Course : AggregateRoot<string>
         Id = id;
         Description = description;
         Semester = semester;
-        Professor = professor;
+        Lecture = professor;
         CreatedOn = createdOn;
         LastModifiedOn = lastModifiedOn;
     }
@@ -30,11 +32,14 @@ internal class Course : AggregateRoot<string>
     }
     public string Description { get; init; }
     public Semester Semester { get; protected init; }
-    public Professor Professor { get; protected set; }
+
+    [ForeignKey("ProfessorId")]
+
+    public Professor Lecture { get; protected set; }
 
     public void UpdateProfessor(Professor newProfessor)
     {
-        Professor = newProfessor ?? throw new ArgumentNullException(nameof(newProfessor));
+        Lecture = newProfessor ?? throw new ArgumentNullException(nameof(newProfessor));
         LastModifiedOn = DateTimeOffset.UtcNow;
     }
 }

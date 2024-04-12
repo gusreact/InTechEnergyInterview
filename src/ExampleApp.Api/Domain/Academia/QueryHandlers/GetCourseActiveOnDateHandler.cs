@@ -18,7 +18,7 @@ internal class GetCourseActiveOnDateHandler : IRequestHandler<GetCourseActiveOnD
         var courses = await _context.Courses
             .Where(c => c.Semester.Start <= request.ActiveOn && request.ActiveOn <= c.Semester.End && c.Id == request.courseId)
             .Include(c => c.Semester)
-            .Include(c => c.Professor)
+            .Include(c => c.Lecture)
             .FirstOrDefaultAsync(cancellationToken: cancellationToken);
         return courses;
     }

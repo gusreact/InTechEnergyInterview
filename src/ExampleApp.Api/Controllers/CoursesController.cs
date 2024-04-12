@@ -39,7 +39,7 @@ public class CoursesController : ControllerBase
             List<CourseModel> coursesModel = new();
             foreach (Course course in group)
             {
-                var professorModel = new KeyNameModel(course.Professor.Id.ToString(), course.Professor.FullName);
+                var professorModel = new KeyNameModel(course.Lecture.Id.ToString(), course.Lecture.FullName);
                 var courseModel = new CourseModel(course.Id, course.Description, professorModel);
                 coursesModel.Add(courseModel);
             }
