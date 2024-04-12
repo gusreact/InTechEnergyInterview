@@ -21,19 +21,30 @@ public class CoursesController : ControllerBase
     }
 
     [HttpGet(Name = "GetCurrentCourses")]
-    public async Task<IEnumerable<CourseModel>> GetCurrent()
+    public async Task<IEnumerable<SemesterModel>> GetCurrent()
     {
         DateOnly today = new(2023, 9, 1);
         ICollection<Course> courses = await _mediator.Send(new GetCoursesActiveOnDateQuery(today));
         _logger.LogInformation("Retrieved {Count} current courses", courses.Count);
 
-        List <CourseModel> models = new();
+        Semester semester = await _mediator.Send(new GetSemesterActiveOnDateQuery(today));
+        _logger.LogInformation("The current semester is ", semester.Id);
 
-        models.AddRange(from course in courses
-                        let semesterModel = new KeyNameModel(course.Semester.Id, course.Semester.Description)
-                        let professorModel = new KeyNameModel(course.Professor.Id.ToString(), course.Professor.FullName)
-                        let courseModel = new CourseModel(course.Id, course.Description, semesterModel, professorModel)
-                        select courseModel);
+        List <SemesterModel> models = new();
+
+        var coursesBySemester = courses.GroupBy(c => c.Semester.Id).ToList();
+
+        foreach (var group in coursesBySemester)
+        {
+            List<CourseModel> coursesModel = new();
+            foreach (Course course in group)
+            {
+                var professorModel = new KeyNameModel(course.Professor.Id.ToString(), course.Professor.FullName);
+                var courseModel = new CourseModel(course.Id, course.Description, professorModel);
+                coursesModel.Add(courseModel);
+            }
+            models.Add(new SemesterModel(semester.Id, semester.Description, semester.Start, semester.End, coursesModel));
+        }
 
         return models;
     }
